@@ -2,7 +2,7 @@ package com.beekay.home.model;
 
 import lombok.*;
 
-import javax.persistence.Entity;
+import javax.persistence.*;
 import java.math.BigDecimal;
 
 @Getter
@@ -10,12 +10,17 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
+@Table(name = "groceries")
 public class Grocery extends BaseEntity {
 
+    @Column(name = "name")
     private String name;
 
+    @Column(name = "quantity")
+    @Enumerated( value = EnumType.STRING)
     private Quantity quantity;
 
+    @Column(name = "amount")
     private BigDecimal amount;
 
     @Builder
