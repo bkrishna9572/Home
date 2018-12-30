@@ -1,19 +1,21 @@
 package com.beekay.home.service;
 
-import com.beekay.home.model.Grocery;
+import com.beekay.home.api.v1.model.GroceryDTO;
 
 import java.util.Set;
 
 public interface GroceryService {
 
-    Set<Grocery> listGroceries();
+    Set<GroceryDTO> listGroceries();
 
-    Grocery getGroceryById(Long id);
+    GroceryDTO getGroceryById(Long id);
 
-    Grocery saveGrocery(Grocery grocery);
+    GroceryDTO getGroceryByName(String name);
 
-    void deleteGrocery(Grocery grocery);
-
-    void deleteGroceryById(Long id);
+//    Grocery saveGrocery(Grocery grocery);
+//
+//    void deleteGrocery(Grocery grocery);
+//
+//    void deleteGroceryById(Long id);
 
 }
