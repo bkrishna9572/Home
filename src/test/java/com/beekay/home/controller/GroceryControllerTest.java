@@ -20,8 +20,7 @@ import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasSize;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -94,6 +93,23 @@ public class GroceryControllerTest {
         .contentType(MediaType.APPLICATION_JSON_VALUE)
         .content(new ObjectMapper().writeValueAsString(dto)))
                 .andExpect(status().isCreated())
+                .andExpect(jsonPath("$.name",equalTo("Rice")));
+    }
+
+    @Test
+    public void updateGrocery() throws Exception {
+        GroceryDTO dto = new GroceryDTO();
+        dto.setName("Rice");
+
+        GroceryDTO returnDTO = new GroceryDTO();
+        returnDTO.setName(dto.getName());
+
+        when(groceryService.updateGrocery(anyLong(),any())).thenReturn(returnDTO);
+
+        mockMvc.perform(put("/api/v1/groceries/1")
+        .contentType(MediaType.APPLICATION_JSON_VALUE)
+        .content(new ObjectMapper().writeValueAsString(returnDTO)))
+                .andExpect(status().isOk())
                 .andExpect(jsonPath("$.name",equalTo("Rice")));
     }
 }

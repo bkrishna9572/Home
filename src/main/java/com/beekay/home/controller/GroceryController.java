@@ -47,4 +47,12 @@ public class GroceryController {
         );
     }
 
+    @PutMapping("{id}")
+    public ResponseEntity<GroceryDTO> updateGrocery(@PathVariable Long id, @RequestBody GroceryDTO groceryDTO){
+        return new ResponseEntity<>(
+                groceryService.updateGrocery(id, groceryDTO),
+                HttpStatus.OK
+        );
+    }
+
 }

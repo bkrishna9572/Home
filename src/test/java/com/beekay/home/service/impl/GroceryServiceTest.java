@@ -95,4 +95,20 @@ public class GroceryServiceTest {
         assertEquals(grocery.getName(),groceryDTO.getName());
         verify(groceryRepository,times(1)).save(any());
     }
+
+    @Test
+    public void updateGrocery() {
+        GroceryDTO dto = new GroceryDTO();
+        dto.setName("Rice");
+        Long id = 2L;
+
+        Grocery returnGrocery = new Grocery();
+        returnGrocery.setName(dto.getName());
+        returnGrocery.setId(id);
+        when(groceryRepository.save(any())).thenReturn(returnGrocery);
+
+        GroceryDTO savedDTO = service.updateGrocery(id,dto);
+
+        assertEquals(id, savedDTO.getId());
+    }
 }

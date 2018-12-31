@@ -13,6 +13,8 @@ public interface GroceryService {
     GroceryDTO getGroceryByName(String name);
 
     GroceryDTO saveGrocery(GroceryDTO grocery);
+
+    GroceryDTO updateGrocery(Long id, GroceryDTO groceryDTO);
 //
 //    void deleteGrocery(Grocery grocery);
 //

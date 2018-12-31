@@ -72,4 +72,13 @@ public class GroceryServiceImpl implements GroceryService {
         return groceryMapper.groceryToGroceryDTO(savedGrocery);
     }
 
+    @Override
+    public GroceryDTO updateGrocery(Long id, GroceryDTO groceryDTO) {
+        Grocery grocery = groceryMapper.groceryDTOToGrocery(groceryDTO);
+        grocery.setId(id);
+        Grocery savedGrocery = repository.save(grocery);
+
+        return groceryMapper.groceryToGroceryDTO(savedGrocery);
+    }
+
 }
