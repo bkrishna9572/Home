@@ -1,10 +1,9 @@
-package com.beekay.home.service;
+package com.beekay.home.service.impl;
 
 import com.beekay.home.api.v1.mapper.GroceryMapper;
 import com.beekay.home.api.v1.model.GroceryDTO;
 import com.beekay.home.model.Grocery;
 import com.beekay.home.repository.GroceryRepository;
-import com.beekay.home.service.impl.GroceryServiceImpl;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -17,8 +16,7 @@ import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
 @RunWith(SpringRunner.class)
@@ -75,7 +73,7 @@ public class GroceryServiceTest {
 
         GroceryDTO groceryDto = service.getGroceryById(1L);
 
-        assertNotNull(groceryDto);
+        assertNull(groceryDto);
         verify(groceryRepository, times(1)).findById(anyLong());
     }
 
