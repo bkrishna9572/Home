@@ -86,4 +86,13 @@ public class GroceryServiceTest {
         assertNotNull(groceryDto);
         verify(groceryRepository, times(1)).findByName(anyString());
     }
+
+    @Test
+    public void saveGrocery() {
+        when(groceryRepository.save(any())).thenReturn(grocery);
+
+        GroceryDTO groceryDTO = service.saveGrocery(new GroceryDTO());
+        assertEquals(grocery.getName(),groceryDTO.getName());
+        verify(groceryRepository,times(1)).save(any());
+    }
 }

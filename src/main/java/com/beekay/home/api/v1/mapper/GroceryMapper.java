@@ -12,4 +12,6 @@ public interface GroceryMapper {
 
     @Mapping(source = "id", target = "id")
     GroceryDTO groceryToGroceryDTO(Grocery grocery);
+
+    Grocery groceryDTOToGrocery(GroceryDTO groceryDTO);
 }

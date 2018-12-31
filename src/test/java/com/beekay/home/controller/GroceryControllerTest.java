@@ -2,6 +2,7 @@ package com.beekay.home.controller;
 
 import com.beekay.home.api.v1.model.GroceryDTO;
 import com.beekay.home.service.GroceryService;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -17,10 +18,10 @@ import java.util.Set;
 
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasSize;
-import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -79,5 +80,20 @@ public class GroceryControllerTest {
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.name", equalTo("Rice")));
+    }
+
+    @Test
+    public void saveGrocery() throws Exception {
+        GroceryDTO dto = new GroceryDTO();
+        dto.setId(1L);
+        dto.setName("Rice");
+
+        when(groceryService.saveGrocery(any())).thenReturn(dto);
+
+        mockMvc.perform(post("/api/v1/groceries")
+        .contentType(MediaType.APPLICATION_JSON_VALUE)
+        .content(new ObjectMapper().writeValueAsString(dto)))
+                .andExpect(status().isCreated())
+                .andExpect(jsonPath("$.name",equalTo("Rice")));
     }
 }

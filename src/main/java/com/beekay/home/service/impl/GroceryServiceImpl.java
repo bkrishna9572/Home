@@ -38,41 +38,38 @@ public class GroceryServiceImpl implements GroceryService {
 
     @Override
     public GroceryDTO getGroceryById(Long id) {
+        log.debug("Getting grocery by id "+id);
         Optional<Grocery> groceryOptional = repository.findById(id);
         if(groceryOptional.isPresent()){
+            log.debug("Grocery found with id "+groceryOptional.get().getId());
             return groceryMapper.groceryToGroceryDTO(groceryOptional.get());
         }else{
+            log.debug("Grocery not found with id "+id);
             return null;
         }
     }
 
     @Override
     public GroceryDTO getGroceryByName(String name) {
+        log.debug("Getting grocery by name "+name);
         Optional<Grocery> groceryOptional = repository.findByName(name);
         if(groceryOptional.isPresent()){
+            log.debug("Grocery found with id "+groceryOptional.get().getId());
             return groceryMapper.groceryToGroceryDTO(groceryOptional.get());
         }else{
+            log.debug("Grocery not found with name "+name);
+            //TODO Exception Handling
             return null;
         }
     }
 
-//    @Override
-//    public Grocery getGroceryById(Long id) {
-//        return null;
-//    }
-//
-//    @Override
-//    public Grocery saveGrocery(Grocery grocery) {
-//        return null;
-//    }
-//
-//    @Override
-//    public void deleteGrocery(Grocery grocery) {
-//
-//    }
-//
-//    @Override
-//    public void deleteGroceryById(Long id) {
-//
-//    }
+    @Override
+    public GroceryDTO saveGrocery(GroceryDTO groceryDTO) {
+        Grocery grocery = groceryMapper.groceryDTOToGrocery(groceryDTO);
+
+        Grocery savedGrocery = repository.save(grocery);
+
+        return groceryMapper.groceryToGroceryDTO(savedGrocery);
+    }
+
 }

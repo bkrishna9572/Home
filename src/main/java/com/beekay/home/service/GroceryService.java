@@ -12,7 +12,7 @@ public interface GroceryService {
 
     GroceryDTO getGroceryByName(String name);
 
-//    Grocery saveGrocery(Grocery grocery);
+    GroceryDTO saveGrocery(GroceryDTO grocery);
 //
 //    void deleteGrocery(Grocery grocery);
 //
