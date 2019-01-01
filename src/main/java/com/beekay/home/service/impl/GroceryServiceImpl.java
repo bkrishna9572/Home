@@ -65,10 +65,11 @@ public class GroceryServiceImpl implements GroceryService {
 
     @Override
     public GroceryDTO saveGrocery(GroceryDTO groceryDTO) {
+        log.debug("Saving a grocery with name "+groceryDTO.getName());
         Grocery grocery = groceryMapper.groceryDTOToGrocery(groceryDTO);
 
         Grocery savedGrocery = repository.save(grocery);
-
+        log.debug("Grocery saved with id "+savedGrocery.getId());
         return groceryMapper.groceryToGroceryDTO(savedGrocery);
     }
 
@@ -77,8 +78,14 @@ public class GroceryServiceImpl implements GroceryService {
         Grocery grocery = groceryMapper.groceryDTOToGrocery(groceryDTO);
         grocery.setId(id);
         Grocery savedGrocery = repository.save(grocery);
-
+        log.debug("Updated Grocery with id "+id);
         return groceryMapper.groceryToGroceryDTO(savedGrocery);
+    }
+
+    @Override
+    public void deleteGroceryById(Long id) {
+        log.debug("Deleting grocery with id "+id);
+        repository.deleteById(id);
     }
 
 }

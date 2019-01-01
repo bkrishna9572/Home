@@ -18,8 +18,10 @@ import java.util.Set;
 
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasSize;
-import static org.mockito.ArgumentMatchers.*;
-import static org.mockito.Mockito.when;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -111,5 +113,14 @@ public class GroceryControllerTest {
         .content(new ObjectMapper().writeValueAsString(returnDTO)))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.name",equalTo("Rice")));
+    }
+
+    @Test
+    public void deleteGroceryById() throws Exception {
+        mockMvc.perform(delete("/api/v1/groceries/1")
+        .contentType(MediaType.APPLICATION_JSON_VALUE))
+                .andExpect(status().isOk());
+
+        verify(groceryService,times(1)).deleteGroceryById(anyLong());;
     }
 }

@@ -55,4 +55,12 @@ public class GroceryController {
         );
     }
 
+    @DeleteMapping("{id}")
+    public ResponseEntity<Void> deleteGrocery(@PathVariable Long id){
+        groceryService.deleteGroceryById(id);
+        return new ResponseEntity<Void>(
+                HttpStatus.OK
+        );
+    }
+
 }

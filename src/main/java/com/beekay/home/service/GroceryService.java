@@ -15,9 +15,7 @@ public interface GroceryService {
     GroceryDTO saveGrocery(GroceryDTO grocery);
 
     GroceryDTO updateGrocery(Long id, GroceryDTO groceryDTO);
-//
-//    void deleteGrocery(Grocery grocery);
-//
-//    void deleteGroceryById(Long id);
+
+    void deleteGroceryById(Long id);
 
 }

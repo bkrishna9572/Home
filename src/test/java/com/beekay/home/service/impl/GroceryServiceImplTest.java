@@ -20,7 +20,7 @@ import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
 @RunWith(SpringRunner.class)
-public class GroceryServiceTest {
+public class GroceryServiceImplTest {
 
     private static final String RICE = "Rice";
     private static final Long ID = 1L;
@@ -110,5 +110,11 @@ public class GroceryServiceTest {
         GroceryDTO savedDTO = service.updateGrocery(id,dto);
 
         assertEquals(id, savedDTO.getId());
+    }
+
+    @Test
+    public void deleteGrocery() {
+        service.deleteGroceryById(anyLong());
+        verify(groceryRepository,times(1)).deleteById(anyLong());
     }
 }
