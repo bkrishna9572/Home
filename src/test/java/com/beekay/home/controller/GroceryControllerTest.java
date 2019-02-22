@@ -1,6 +1,7 @@
 package com.beekay.home.controller;
 
 import com.beekay.home.api.v1.model.GroceryDTO;
+import com.beekay.home.model.Quantity;
 import com.beekay.home.service.GroceryService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Before;
@@ -88,6 +89,7 @@ public class GroceryControllerTest {
         GroceryDTO dto = new GroceryDTO();
         dto.setId(1L);
         dto.setName("Rice");
+        dto.setQuantity(Quantity.LITRE);
 
         when(groceryService.saveGrocery(any())).thenReturn(dto);
 

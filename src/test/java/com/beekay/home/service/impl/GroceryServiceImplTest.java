@@ -2,6 +2,8 @@ package com.beekay.home.service.impl;
 
 import com.beekay.home.api.v1.mapper.GroceryMapper;
 import com.beekay.home.api.v1.model.GroceryDTO;
+import com.beekay.home.exceptions.ResourceNotFoundException;
+import com.beekay.home.exceptions.UniqueConstraintViolationException;
 import com.beekay.home.model.Grocery;
 import com.beekay.home.repository.GroceryRepository;
 import org.junit.Before;
@@ -16,7 +18,8 @@ import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 import static org.mockito.Mockito.*;
 
 @RunWith(SpringRunner.class)
@@ -67,13 +70,12 @@ public class GroceryServiceImplTest {
         verify(groceryRepository, times(1)).findById(anyLong());
     }
 
-    @Test
+    @Test(expected = ResourceNotFoundException.class)
     public void getGroceryByIdNull() {
         when(groceryRepository.findById(anyLong())).thenReturn(Optional.empty());
 
         GroceryDTO groceryDto = service.getGroceryById(1L);
 
-        assertNull(groceryDto);
         verify(groceryRepository, times(1)).findById(anyLong());
     }
 
@@ -89,9 +91,15 @@ public class GroceryServiceImplTest {
 
     @Test
     public void saveGrocery() {
+
         when(groceryRepository.save(any())).thenReturn(grocery);
 
-        GroceryDTO groceryDTO = service.saveGrocery(new GroceryDTO());
+        GroceryDTO groceryDTO = null;
+        try {
+            groceryDTO = service.saveGrocery(new GroceryDTO());
+        } catch (UniqueConstraintViolationException e) {
+            e.printStackTrace();
+        }
         assertEquals(grocery.getName(),groceryDTO.getName());
         verify(groceryRepository,times(1)).save(any());
     }

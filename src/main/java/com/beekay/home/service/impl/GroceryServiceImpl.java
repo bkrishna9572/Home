@@ -2,10 +2,13 @@ package com.beekay.home.service.impl;
 
 import com.beekay.home.api.v1.mapper.GroceryMapper;
 import com.beekay.home.api.v1.model.GroceryDTO;
+import com.beekay.home.exceptions.ResourceNotFoundException;
+import com.beekay.home.exceptions.UniqueConstraintViolationException;
 import com.beekay.home.model.Grocery;
 import com.beekay.home.repository.GroceryRepository;
 import com.beekay.home.service.GroceryService;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -15,6 +18,7 @@ import java.util.stream.StreamSupport;
 
 @Service
 @Slf4j
+@Profile({"default","dev"})
 public class GroceryServiceImpl implements GroceryService {
 
     private final GroceryRepository repository;
@@ -45,7 +49,7 @@ public class GroceryServiceImpl implements GroceryService {
             return groceryMapper.groceryToGroceryDTO(groceryOptional.get());
         }else{
             log.debug("Grocery not found with id "+id);
-            return null;
+            throw new ResourceNotFoundException("Could not find any grocery with id "+id);
         }
     }
 
@@ -58,19 +62,25 @@ public class GroceryServiceImpl implements GroceryService {
             return groceryMapper.groceryToGroceryDTO(groceryOptional.get());
         }else{
             log.debug("Grocery not found with name "+name);
-            //TODO Exception Handling
-            return null;
+            throw new ResourceNotFoundException("Could not find any grocery with name "+name);
         }
     }
 
     @Override
-    public GroceryDTO saveGrocery(GroceryDTO groceryDTO) {
+    public GroceryDTO saveGrocery(GroceryDTO groceryDTO) throws UniqueConstraintViolationException {
         log.debug("Saving a grocery with name "+groceryDTO.getName());
-        Grocery grocery = groceryMapper.groceryDTOToGrocery(groceryDTO);
+        try {
+            GroceryDTO g = getGroceryByName(groceryDTO.getName());
+            throw new UniqueConstraintViolationException("Entry for " + groceryDTO.getName() +
+                    " already found with id " + g.getId());
+        } catch (ResourceNotFoundException ex) {
+            Grocery grocery = groceryMapper.groceryDTOToGrocery(groceryDTO);
 
-        Grocery savedGrocery = repository.save(grocery);
-        log.debug("Grocery saved with id "+savedGrocery.getId());
-        return groceryMapper.groceryToGroceryDTO(savedGrocery);
+            Grocery savedGrocery = repository.save(grocery);
+            log.debug("Grocery saved with id "+savedGrocery.getId());
+            return groceryMapper.groceryToGroceryDTO(savedGrocery);
+        }
+
     }
 
     @Override

@@ -2,8 +2,10 @@ package com.beekay.home.controller;
 
 import com.beekay.home.api.v1.model.GroceryDTO;
 import com.beekay.home.api.v1.model.GroceryListDTO;
+import com.beekay.home.exceptions.UniqueConstraintViolationException;
 import com.beekay.home.service.GroceryService;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.annotation.Profile;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -11,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/api/v1/groceries")
 @Slf4j
+@Profile({"default","dev"})
 public class GroceryController {
 
     private final GroceryService groceryService;
@@ -40,9 +43,12 @@ public class GroceryController {
     }
 
     @PostMapping
-    public ResponseEntity<GroceryDTO> saveGrocery(@RequestBody GroceryDTO groceryDTO){
+    public ResponseEntity<GroceryDTO> saveGrocery(@RequestBody GroceryDTO groceryDTO) throws UniqueConstraintViolationException {
+        log.debug(groceryDTO.getName());
+        log.debug(groceryDTO.getQuantity().name());
+        GroceryDTO savedDto = groceryService.saveGrocery((groceryDTO));
         return new ResponseEntity<>(
-                groceryService.saveGrocery(groceryDTO),
+                savedDto,
                 HttpStatus.CREATED
         );
     }
